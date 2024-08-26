@@ -19,6 +19,8 @@ header{
 
 body{
     background-color: bisque;
+    font-family: Arial, Helvetica, sans-serif;
+
 }
 
 nav{
@@ -116,5 +118,5 @@ label{
 
 #pais{
 
-    margin-left: 1em;
+    margin-left: 1.3em;
 }
