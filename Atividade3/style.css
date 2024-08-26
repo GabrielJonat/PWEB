@@ -8,6 +8,7 @@ a:hover{
 }
 
 header{
+
     background-color: #ff9800;
     color: white;
     padding: 10px 20px;
@@ -76,4 +77,44 @@ figure figcaption{
     text-align: center;
     width: 164px;
     margin-top: 1em;
+}
+
+.btn{
+
+    border: 3.5px solid gray;
+    margin-top: 2em;
+    color: #fff;
+    background-color: #4caf50;
+    border-radius: 3em;
+    width: 8%;
+}
+
+.btn:hover{
+
+    background-color: blue;
+}
+
+#sexos{
+
+    margin-left: 0.5em;
+}
+
+legend{
+
+    font-weight: bold;
+    color: blue;
+    font-size: 24px;
+}
+
+label{
+    color: darkorchid;
+}
+
+#M,#F{
+    color: black;
+}
+
+#pais{
+
+    margin-left: 1em;
 }

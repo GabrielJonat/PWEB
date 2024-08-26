@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página utilizando Forms</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main>
+        <div id="formulario">
+            <form action="" method="">
+                <section>
+                    <fieldset>
+                        <legend>Informações pessoais do aluno</legend>
+                        <br>
+                        <label for="nome">Nome:</label>
+                        <input type="text" id="nome" placeholder="Digite o nome do aluno" name="nome" required size="50" maxlength="50" pattern="[a-zA-Z]{1,50}" autofocus>
+                        <br>
+                        <br>
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" placeholder="Digite o email do aluno" name="email" size="50" required>
+                        <br>
+                        <br>
+                        <div>
+                            <label for="sexo">Sexo:</label>
+                            <span id="sexos">
+                                <label id="M">Masculino:</label>
+                                <input type="radio" id="masculino" name="sexo" checked>
+                                <label id="F">Feminino:</label>
+                                <input type="radio" id="feminino" name="sexo">
+                            </span>
+                        </div>
+                        <br>
+                        <br>
+                        <label for="pais">País:</label>
+                        <select name="pais" id="pais">
+                            <option value="Israel" selected>Israel</option>
+                            <option value="Brasil">Brasil</option>
+                            <option value="EUA">Estados Unidos da America</option>
+                        </select>
+                        <br>
+                        <br>
+                        <label for="hobby">Hobby:</label>
+                        <input type="text" id="hobby" placeholder="Qual o passa tempo do aluno" name="hobby" size="50">
+                        <br>
+                    </fieldset>
+                    <input type="submit" value="Enviar" class="btn">
+                </section>
+            </form>
+        </div>
+    </main>
+</body>
+</html>
