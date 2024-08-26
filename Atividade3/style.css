@@ -133,3 +133,14 @@ form section{
 
     border: 15px solid gray;
 }
+
+input[type="text"],
+input[type="email"],
+select,
+textarea{
+
+    padding: 10px;
+    border: 2px solid gray;
+    border-radius: 3%;
+    
+}
