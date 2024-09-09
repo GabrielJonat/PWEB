@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .h2-alvo::before {
+  content: 'verdão';
+}
+
+    .div-alvo{
+      background-color: green;
+      width: 500px;
+      height: 500px;
+    }
+    @media (max-width: 1920px) {
+      .div-alvo{
+
+        background-color: yellowgreen;
+      }
+      .h2-alvo::before {
+  content: 'verdinho';
+}
+    }
+    @media (min-width: 1366px) and (max-width: 1920px){
+      .div-alvo{
+
+        background-color: yellow;
+      }
+      .h2-alvo::before {
+  content: 'amarelo';
+}
+    }
+    @media (min-width: 1080px) and (max-width: 1366px){
+      .div-alvo{
+
+        background-color: red;
+      }
+      .h2-alvo::before {
+  content: 'vermelho';
+}
+    }
+    @media (min-width: 1024px) and (max-width: 1080px){
+      .div-alvo{
+
+        background-color: pink;
+      }
+      .h2-alvo::before {
+  content: 'rosa';
+}
+    }
+    @media (min-width: 768px) and (max-width: 1024px){
+      .div-alvo{
+
+        background-color: orange;
+      }
+      .h2-alvo::before {
+  content: 'laranja';
+}
+    }
+    @media (min-width: 420px) and (max-width: 768px){
+      .div-alvo{
+
+        background-color: gray;
+      }
+        .h2-alvo::before {
+  content: 'cinza';
+}
+    }
+    
+
+  </style>
+</head>
+<body>
+    <div class="div-alvo">
+      <h2 class="h2-alvo"></h2>
+    </div>
+</body>
+</html>
