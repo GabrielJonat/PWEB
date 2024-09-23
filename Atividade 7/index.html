@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jokenpo</title>
+</head>
+<body>
+    <select name="opcao" id="opcao">
+        <option value="" selected>Escolha uma opção</option>
+        <option value="Pedra">Pedra</option>
+        <option value="Papel">Papel</option>
+        <option value="Tesoura">Tesoura</option>
+    </select>
+    <button onclick="Jogar()">Jogar</button>
+    <h1>Jogador</h1>
+    <div id="ilustracao">
+        <img src="./dado.jfif" alt="?" style="width: 150px;">
+    </div>
+    <h1>IA</h1>
+    <div id="ilustracaoIa">
+        <img src="./dado.jfif" alt="?" style="width: 150px;">
+    </div>
+
+    <script>
+        let select = document.getElementById('opcao');
+        select.addEventListener('change', MudarImagem);
+
+        function MudarImagem() {
+            let opcao = select.options[select.selectedIndex].value;
+            let img = document.getElementById('ilustracao');
+            let imgIa = document.getElementById('ilustracaoIa');
+            imgIa.innerHTML = '<img src="./dado.jfif" alt="?" style="width: 150px;">'; // Limpa a imagem anterior
+
+            // Lógica para exibir a escolha do jogador
+            switch (opcao) {
+                case "Pedra":
+                    img.innerHTML = `<img src="./r.png" style="width: 150px; margin-top: 2em;" alt="pedra">`;
+                    break;
+                case "Papel":
+                    img.innerHTML = `<img src="./p.jpg" style="width: 150px; margin-top: 2em;" alt="papel">`;
+                    break;
+                case "Tesoura":
+                    img.innerHTML = `<img src="./t.webp" style="width: 150px; margin-top: 2em;" alt="tesoura">`;
+                    break;
+            }
+        }
+
+        function Jogar() {
+            let select = document.getElementById('opcao');
+            let opcao = select.options[select.selectedIndex].value;
+            let imgIa = document.getElementById('ilustracaoIa');
+
+            // Verifica se uma opção válida foi escolhida
+            if (opcao === "") {
+                window.alert("Por favor, escolha uma opção!");
+                return;
+            }
+
+            // Lógica para a escolha aleatória da IA
+            var rand = Math.floor(Math.random() * 3);
+            var opcaoRand;
+            switch (rand) {
+                case 0:
+                    opcaoRand = "Pedra";
+                    imgIa.innerHTML = `<img src="./r.png" style="width: 150px; margin-top: 2em;" alt="pedra">`;
+                    break;
+                case 1:
+                    opcaoRand = "Papel";
+                    imgIa.innerHTML = `<img src="./p.jpg" style="width: 150px; margin-top: 2em;" alt="papel">`;
+                    break;
+                case 2:
+                    opcaoRand = "Tesoura";
+                    imgIa.innerHTML = `<img src="./t.webp" style="width: 150px; margin-top: 2em;" alt="tesoura">`;
+                    break;
+            }
+
+            // Delay antes de mostrar o resultado
+            setTimeout(() => {
+            
+                // Lógica para determinar o vencedor
+                if (opcao === opcaoRand) {
+                    window.alert("Empate.");
+                } else if (
+                    (opcao === "Pedra" && opcaoRand === "Tesoura") ||
+                    (opcao === "Papel" && opcaoRand === "Pedra") ||
+                    (opcao === "Tesoura" && opcaoRand === "Papel")
+                ) {
+                    window.alert("Você ganhou!");
+                } else {
+                    window.alert("Você perdeu!");
+                }
+            }, 500); // Atraso de 500 milissegundos (0,5 segundos)
+            img.innerHTML = `<img src="./dado.jfif" alt="?" style="width: 150px;">`
+            imgIa.innerHTML = `<img src="./dado.jfif" alt="?" style="width: 150px;">`
+        }
+    </script>
+</body>
+</html>
