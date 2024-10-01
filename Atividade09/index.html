@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atividade 09</title>
+</head>
+<style>
+     body {
+            font-family: Arial, sans-serif;
+            background-color: antiquewhite;
+            color: #333;
+            margin: 0;
+            padding: 2em;
+        }
+        .container {
+            
+            background: white;
+            padding: 2em;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            margin-bottom: 200px;
+            margin: auto;
+            height: 490px;
+            border: 1px solid #ccc;
+        }
+        .subContainer{
+
+            background:  #cac2c2;
+            box-shadow: 0 0 10px rgb(201, 175, 142,0.8);
+            border-radius: 8px;
+            margin-top: 0.2em;
+            padding: 1em;
+            max-width: 500px;
+            margin: auto;
+        }
+        input[type="number"],input[type="text"]{
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 1em;
+            border: 1px solid #000;
+            border-radius: 4px;
+        }
+        input[type="radio"] {
+            margin-right: 10px;
+        }
+        .btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: bold;
+        }
+        .btn {
+            background-color: #45a049;
+        }
+        label {
+            margin: 1em 0;
+            display: block;
+            font-weight: bold;
+        }
+        .footer {
+        background-color: darkgoldenrod;
+        padding: 1em;
+        text-align: center;
+        width: calc(100% + 2em); /* 4em porque o padding do container é 2em em cada lado */
+        margin-left: -2em;
+        margin-right: -2em;
+        margin-top: 2em;
+        margin-bottom: 10em;
+        color: rgb(236, 227, 214);
+        height: 24px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    }
+
+    h1,h2{
+        text-align: center;
+        font-weight: bold;
+
+    }
+
+    .title{
+        color: yellowgreen;
+        margin-bottom: 3em;
+    }
+
+    .subtitle{
+        color: goldenrod;
+    }
+
+    .resultado{
+        text-align: center;
+    }
+</style>
+<body>
+    <h1 class="title">O QUARTETO FUNCIONAL</h1>
+    <div class="container">
+        <h2 class="subtitle">Função de Comparação</h2>
+        <div class="subContainer">
+            <label for="num1">Número 1: </label>
+            <input type="number" id="num1">
+            <label for="num2">Número 2: </label>
+            <input type="number" id="num2">
+            <label for="num3">Número 3: </label>
+            <input type="number" id="num3">
+            <button onclick="Comparar()" class="btn">Comparar</button>
+            <label for="resultado">Resultado:</label>
+            <div class="card" id="resultado" name="resultado" class="resultado"></div>
+        </div>
+        <div class="footer">
+            <i>2024 todos os direitos reservados &copy;</i>
+        </div>
+    </div>
+
+    <div class="container" style="margin-top: 6em;">
+        <h2 class="subtitle">Função de Ordenação</h2>
+        <div class="subContainer">
+            <label for="num4">Número 1: </label>
+            <input type="number" id="num4">
+            <label for="num5">Número 2: </label>
+            <input type="number" id="num5">
+            <label for="num6">Número 3: </label>
+            <input type="number" id="num6">
+            <button onclick="Ordenar()" class="btn">Ordenar</button>
+            <label for="resultado">Resultado:</label>
+            <div class="card" id="resultado2" name="resultado2" class="resultado"></div>
+        </div>
+        <div class="footer">
+            <i>2024 todos os direitos reservados &copy;</i>
+        </div>
+    </div>
+
+    <div class="container" style="margin-top: 6em; height: 300px;">
+        <h2 class="subtitle">Função Palíndromo</h2>
+        <div class="subContainer">
+            <label for="string">String: </label>
+            <input type="text" id="string">
+            <button onclick="ehPalindromo()" class="btn">Verificar</button>
+            <label for="resultado">Resultado:</label>
+            <div class="card" id="resultado3" name="resultado3"></div>
+        </div>
+        <div class="footer">
+            <i>2024 todos os direitos reservados &copy;</i>
+        </div>
+    </div>
+
+    <div class="container" style="margin-top: 6em; height: 500px; margin-bottom: 2em;">
+        <h2 class="subtitle">Função Triângulo</h2>
+        <div class="subContainer">
+            <label for="lado1">Lado 1: </label>
+            <input type="number" id="lado1">
+            <label for="lado2">Lado 2: </label>
+            <input type="number" id="lado2">
+            <label for="lado3">Lado 3: </label>
+            <input type="number" id="lado3">
+            <button onclick="verificarTriangulo()" class="btn">Verificar</button>
+            <label for="resultado4">Resultado:</label>
+            <div class="card" id="resultado4" name="resultado4" class="resultado"></div>
+        </div>
+        <div class="footer">
+            <i>2024 todos os direitos reservados &copy;</i>
+        </div>
+    </div>
+</body>
+</html>
+<script src="./index.js"></script>
