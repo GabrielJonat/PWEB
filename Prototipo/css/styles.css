@@ -1,0 +1,65 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0; /* Remover padding/margin do body */
+}
+
+.kanban {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+.column {
+    background-color: #e0e0e0;
+    width: 30%;
+    padding: 10px;
+    border-radius: 5px;
+    min-height: 300px;
+}
+
+.task {
+    background-color: #ffffff;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    cursor: move;
+}
+
+h2 {
+    text-align: center;
+}
+
+.navbar {
+    background-color: #1a252f; /* Cor mais escura para a navbar */
+    border: none;
+    margin: 0;
+    padding: 0;
+    width: 100%; /* Ocupar a largura total da tela */
+}
+
+.navbar a {
+    color: #ecf0f1;
+    padding: 15px 20px;
+    display: inline-block;
+}
+
+.navbar a:hover {
+    background-color: #34495e;
+    color: white;
+}
+
+.breadcrumb a {
+    color: #ecf0f1;
+    text-decoration: none;
+}
+
+.breadcrumb a:hover {
+    color: #3498db;
+}
+
+.container-fluid {
+    padding-left: 0;
+    padding-right: 0;
+}
