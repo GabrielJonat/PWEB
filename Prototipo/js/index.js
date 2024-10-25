@@ -2,6 +2,25 @@ const tasks = document.querySelectorAll('.task');
 const columns = document.querySelectorAll('.column');
 var coluna_a_fazer = document.getElementById('a-fazer');
 
+function kanban(element) {
+    element.classList.add('kanbanColor');
+}
+function kanbanRemove(element) {
+    element.classList.remove('kanbanColor');
+}
+function alunos(element) {
+    element.classList.add('alunosColor');
+}
+function alunosRemove(element) {
+    element.classList.remove('alunosColor');
+}
+function estudos(element) {
+    element.classList.add('estudosColor');
+}
+function estudosRemove(element) {
+    element.classList.remove('estudosColor');
+}
+
 // Adiciona eventos para cada tarefa
 tasks.forEach(task => {
     task.addEventListener('dragstart', dragStart);
@@ -148,16 +167,18 @@ function addTask(event) {
         }
     }
 
-    newTask.innerHTML = `
-        <p>${descricao}</p>
-        <p>Alunos: ${alunos}</p>
-        <p>Prioridade: ${prioridade}</p>
-        <p id="due-date">Prazo: ${prazo}</p>
-        <button class="options-btn">Opções</button>
-        <div class="options-menu" style="display: none;">
-            <button class="edit-btn">Editar</button>
-            <button class="remove-btn">Remover</button>
-        </div>`;
+    newTask.innerHTML = `<div class="priority ${prioridade}"></div> <!-- Prioridade Alta -->
+                <h4 class="title">${descricao}</h4>
+                <div class="taskContainer">
+                    <p>Alunos: ${alunos}</p>
+                    <p>Prioridade: ${prioridade}</p>
+                    <p id="due-date">Prazo: ${prazo}</p>
+                </div>
+                <button class="options-btn btn-success btn">Opções</button>
+                <div class="options-menu" style="display: none;">
+                    <button class="edit-btn">Editar</button>
+                    <button class="remove-btn">Remover</button>
+                </div>`;
 
     newTask.setAttribute('draggable', 'true');
     newTask.classList.add('task')

@@ -8,28 +8,28 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
-<body>
+<body style="background-color:azure;">
     <!-- Navbar -->
-    <div class="navbar navbar-default" role="navigation" style="background-color:antiquewhite;">
+    <div class="navbar navbar-default" role="navigation" style="background-color: grey">
         <div class="container-fluid">
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>
                         <!-- Link para a Tela Principal (Kanban) -->
-                        <a href="kanban.html">
-                            <i class="fas fa-columns" title="Kanban" style="color:darkgoldenrod;"></i>
+                        <a href="index.html">
+                            <i class="fas fa-columns" title="Kanban" id="kanban" onmouseenter="kanban(this)" onmouseleave="kanbanRemove(this)"></i>
                         </a>
                     </li>
                     <li>
                         <!-- Link para a Tela de Cadastro de Alunos -->
                         <a href="cadastro-alunos.html">
-                            <i class="fas fa-user-graduate" style="color: blue;" title="Cadastro de Alunos"></i>
+                            <i class="fas fa-user-graduate" title="Cadastro de Alunos" id="alunos" onmouseenter="alunos(this)" onmouseleave="alunosRemove(this)"></i>
                         </a>
                     </li>
                     <li>
                         <!-- Link para a Tela de Cadastro de Assuntos -->
                         <a href="cadastro-assuntos.html">
-                            <i class="fas fa-book" style="color: green;" title="Cadastro de Assuntos"></i>
+                            <i class="fas fa-book" title="Cadastro de Assuntos" id="estudos" onmouseenter="estudos(this)" onmouseleave="estudosRemove(this)"></i>
                         </a>
                     </li>
                 </ul>
@@ -40,13 +40,19 @@
     <!-- Kanban -->
     <div class="kanban">
         <div class="column" id="a-fazer">
-            <h2>A Fazer</h2>
+            <div class="header">
+                <h2>A Fazer</h2>
+            </div>
+            <hr>
             <div class="task" draggable="true">
-                <p>Matemática - Álgebra</p>
-                <p>Alunos: João, Maria</p>
-                <p>Prioridade: Alta</p>
-                <p id="due-date">Prazo: 25/10/2024</p>
-                <button class="options-btn">Opções</button>
+                <div class="priority Média"></div> <!-- Prioridade Alta -->
+                <h4 class="title">Matemática - Álgebra</h4>
+                <div class="taskContainer">
+                    <p>Alunos: João, Maria</p>
+                    <p>Prioridade: Alta</p>
+                    <p id="due-date">Prazo: 25/10/2024</p>
+                </div>
+                <button class="options-btn btn-success btn">Opções</button>
                 <div class="options-menu" style="display: none;">
                     <button class="edit-btn">Editar</button>
                     <button class="remove-btn">Remover</button>
@@ -54,27 +60,39 @@
             </div>
         </div>
         <div class="column" id="em-progresso">
-            <h2>Em Progresso</h2>
+            <div class="header">
+                <h2 style="margin-left: 4em;">Em progresso</h2>
+            </div>
+            <hr>
         </div>
         <div class="column" id="concluido">
-            <h2>Concluído</h2>
+            <div class="header">
+                <h2>Concluído</h2>
+            </div>
+            <hr>
         </div>
     </div>
 
-    <form onsubmit="addTask(event)">
+    <form onsubmit="addTask(event)" class="form-container">
         <label for="description">Descrição:</label>
         <input type="text" name="description" id="description" placeholder="Digite o assunto a se estudar">
         <label for="students">Alunos:</label>
         <input type="text" name="students" id="students" placeholder="Digite o nome dos estudantes">
         <label for="priority">Prioridade:</label>
-        <input type="radio" name="priority" value="baixa">
-        <input type="radio" name="priority" value="média">
-        <input type="radio" name="priority" value="alta">
+        <input type="radio" name="priority" value="Baixa">
+        <input type="radio" name="priority" value="Média">
+        <input type="radio" name="priority" value="Alta">
+        <br>
+        <br>
         <label for="dueDate">Prazo:</label>
         <input type="text" name="dueDate" id="dueDate" placeholder="Digite o prazo de conclusão">
         <input type="submit" class="btn">
     </form>
 
+    <script>
+        
+    </script>
+    
     <script src="./js/index.js"></script>
 </body>
 </html>
