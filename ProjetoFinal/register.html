@@ -117,7 +117,7 @@
             <button type="button" id="register" onclick="handleRegister()">Criar Conta</button>
             <footer>
                 <div class="hint">
-                    Já tem conta? <a href="login.html">Entrar</a>!
+                    Já tem conta? <a href="index.html">Entrar</a>!
                 </div>
             </footer>
         </form>
@@ -178,7 +178,7 @@
                         const data = await login.json();
                         const userId = data.userId;
                         Cookies.set('userId', userId);
-                        window.location.href = 'index.html';
+                        window.location.href = 'home.html';
                     } else {
                         alert('Erro ao fazer login. Verifique suas credenciais.');
                     }

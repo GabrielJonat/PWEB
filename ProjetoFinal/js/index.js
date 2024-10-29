@@ -378,7 +378,7 @@ function logout() {
     Cookies.remove('userId'); // Substitua 'userId' pelo nome do seu cookie, se diferente
 
     // Redireciona para a página de login
-    window.location.href = 'login.html'; // Altere para o caminho da sua página de login
+    window.location.href = 'index.html'; // Altere para o caminho da sua página de login
 }
 
 // Exemplo de uso: vincular essa função a um botão de logout
