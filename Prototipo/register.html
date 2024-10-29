@@ -24,7 +24,7 @@
         }
 
         h1 {
-            color:cadetblue;
+            color: cadetblue;
             font-size: 2em;
             margin: 0;
         }
@@ -82,7 +82,7 @@
             background-color: #45a049;
         }
 
-        .hint{
+        .hint {
             margin-top: 1em;
         }
 
@@ -102,7 +102,7 @@
     </div>
 
     <div class="card">
-        <h2>Login</h2>
+        <h2>Cadastro</h2>
         <form id="loginForm">
             <label for="user">Usuário:</label>
             <input type="text" name="user" id="user" placeholder="Nome do Usuário" required>
@@ -110,10 +110,13 @@
             <label for="password">Senha:</label>
             <input type="password" placeholder="Senha" name="password" id="password" required>
             
-            <button type="button" id="login" onclick="handleLogin()">Entrar</button>
+            <label for="passwordConfirm">Confirmar Senha:</label>
+            <input type="password" placeholder="Confirme sua Senha" name="passwordConfirm" id="passwordConfirm" required>
+
+            <button type="button" id="register" onclick="handleRegister()">Criar Conta</button>
             <footer>
                 <div class="hint">
-                    Não tem conta? <a href="register.html">Cadastre-se</a>!
+                    Já tem conta? <a href="login.html">Entrar</a>!
                 </div>
             </footer>
         </form>
@@ -122,25 +125,68 @@
     <script src="js/packages/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.1/js.cookie.min.js"></script>
     <script>
-        async function handleLogin() {
+        function validatePassword(password) {
+            const minLength = 8;
+            const hasNumber = /\d/;
+            return password.length >= minLength && hasNumber.test(password);
+        }
+
+        async function handleRegister() {
             const username = document.getElementById('user').value;
             const password = document.getElementById('password').value;
-            const response = await fetch('http://135.181.89.240:8011/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ usuario: username, senha: password })
-            });
+            const confirm = document.getElementById('passwordConfirm').value;
 
-            if (response.ok) {
-                const data = await response.json();
-                const userId = data.userId;
-                Cookies.set('userId', userId);
-                window.location.href = 'index.html';
-            } else {
-                alert('Erro ao fazer login. Verifique suas credenciais.');
-                console.log(JSON.stringify({ usuario: username, senha: password }));
+            // Validate username and password fields
+            if (!username || !password) {
+                alert("Usuário e senha não podem estar vazios.");
+                return;
+            }
+
+            // Validate password strength
+            if (!validatePassword(password)) {
+                alert("A senha deve ter pelo menos 8 caracteres e conter pelo menos um número.");
+                return;
+            }
+
+            // Check if passwords match
+            if (password !== confirm) {
+                alert("As senhas não coincidem.");
+                return;
+            }
+
+            try {
+                const response = await fetch('http://135.181.89.240:8011/cadastrarUsuario', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ usuario: username, senha: password })
+                });
+
+                if (response.ok) {
+                    alert('Usuário cadastrado com sucesso!');
+                    const login = await fetch('http://135.181.89.240:8011/login', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ usuario: username, senha: password })
+                    });
+
+                    if (login.ok) {
+                        const data = await login.json();
+                        const userId = data.userId;
+                        Cookies.set('userId', userId);
+                        window.location.href = 'index.html';
+                    } else {
+                        alert('Erro ao fazer login. Verifique suas credenciais.');
+                    }
+                } else {
+                    alert('Erro ao cadastrar usuário.');
+                }
+            } catch (error) {
+                console.error("Erro:", error);
+                alert('Ocorreu um erro ao tentar cadastrar o usuário.');
             }
         }
     </script>

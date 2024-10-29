@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulário de Tarefa</title>
+    <title>Studin Manager</title>
     <link rel="stylesheet" href="./css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.1/js.cookie.min.js"></script>
     <style>
         .navbar {
             position: fixed; /* Fixa a navbar no topo */
@@ -66,19 +67,51 @@ height: 100vh; /* Ocupa a altura total da janela */">
 
     <div class="form-container">
         <h2>Adicionar aluno</h2>
-        <form onsubmit="addTask(event)">
+        <form onsubmit="addStudent(event)">
             <label for="description">Nome:</label>
             <input type="text" name="nome" id="nome" placeholder="Digite o nome do aluno" required>
             <input type="submit" class="btn" value="Adicionar aluno">
         </form>
     </div>
+    <!-- Adicione esta seção onde você deseja exibir os alunos com a opção de deletá-los -->
+    <h2>Lista de Alunos:</h2>
+    <div id="studentsList"></div>
 
     <script>
-        function addTask(event) {
-            event.preventDefault();
-            // Lógica para adicionar aluno
-            alert("Aluno adicionado!");
+
+        const userId = Cookies.get('userId');
+        async function addStudent(event) {
+        event.preventDefault();
+          // Captura os valores dos inputs
+        const nome = document.getElementById("nome").value;
+        
+        // Monta o objeto com os dados a serem enviados
+        const data = {
+            nome: nome,
+            usuario: userId
+        };
+
+        try {
+            // Faz a requisição POST com o objeto JSON
+            const response = await fetch('http://135.181.89.240:8011/cadastrarAluno', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+
+            if (response.ok) {
+                alert("Aluno adicionado com sucesso!");
+                document.querySelector("form").reset(); // Limpa o formulário
+            } else {
+                alert("Erro ao adicionar aluno.");
+            }
+        } catch (error) {
+            console.error("Erro ao conectar com o servidor:", error);
+            alert("Erro ao conectar com o servidor.");
         }
+    }
         function kanban(element) {
             element.classList.add('kanbanColor');
         }
@@ -97,6 +130,78 @@ height: 100vh; /* Ocupa a altura total da janela */">
         function estudosRemove(element) {
             element.classList.remove('estudosColor');
         }
+        document.addEventListener('DOMContentLoaded', (event) => {
+    fetchAndDisplayStudents();
+});
+
+async function fetchAndDisplayStudents() {
+    try {
+        const response = await fetch(`http://135.181.89.240:8011/alunos?usuario=${userId}`);
+        if (response.ok) {
+            const students = await response.json();
+            const studentsList = document.getElementById('studentsList');
+            studentsList.innerHTML = ''; // Limpa a lista anterior
+
+            students.forEach(student => {
+                const studentDiv = document.createElement('div');
+                studentDiv.innerHTML = `
+                    <span>${student.nome}</span>
+                    <button onclick="deleteStudent(${student.id}, '${student.nome}')">Deletar</button>
+                `;
+                studentsList.appendChild(studentDiv);
+            });
+        } else {
+            console.error("Erro ao buscar alunos.");
+        }
+    } catch (error) {
+        console.error("Erro ao conectar com o servidor:", error);
+    }
+}
+
+async function isStudentInTasks(studentName) {
+    try {
+        const response = await fetch(` http://135.181.89.240:8011/assuntos?usuario=${userId}`);
+        if (response.ok) {
+            const tasks = await response.json();
+            // Verifica se o aluno está na lista de alunos de alguma tarefa
+            return tasks.some(task => task.alunos.split(', ').includes(studentName));
+        } else {
+            console.error("Erro ao buscar tarefas.");
+            return false; // Se a requisição falhar, não bloqueia a exclusão
+        }
+    } catch (error) {
+        console.error("Erro ao conectar com o servidor:", error);
+        return false; // Se houver erro, não bloqueia a exclusão
+    }
+}
+
+async function deleteStudent(studentId, studentName) {
+    // Verifica se o aluno está associado a alguma tarefa
+    const isInTasks = await isStudentInTasks(studentName);
+
+    if (isInTasks) {
+        alert("Não é possível deletar este aluno porque ele está associado a uma tarefa.");
+        return; // Interrompe a execução se o aluno estiver associado a uma tarefa
+    }
+
+    if (confirm("Você tem certeza que deseja deletar este aluno?")) {
+        try {
+            const response = await fetch(`http://135.181.89.240:8011/alunos/${studentId}`, {
+                method: 'DELETE',
+            });
+
+            if (response.ok) {
+                alert("Aluno deletado com sucesso!");
+                fetchAndDisplayStudents(); // Atualiza a lista de alunos
+            } else {
+                alert("Erro ao deletar o aluno.");
+            }
+        } catch (error) {
+            console.error("Erro ao conectar com o servidor:", error);
+            alert("Erro ao conectar com o servidor.");
+        }
+    }
+}
 
     </script>
     

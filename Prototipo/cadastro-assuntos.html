@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulário de Tarefa</title>
+    <title>Studin Manager</title>
     <link rel="stylesheet" href="./css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.1/js.cookie.min.js"></script>
     <style>
         .navbar {
             position: fixed; /* Fixa a navbar no topo */
@@ -26,43 +27,32 @@
         }
     </style>
 </head>
-<body style="  font-family: Arial, sans-serif;
-background-color: azure;
-margin: 0;
-display: flex;
-flex-direction: column;
-align-items: center; /* Alinha o conteúdo no centro horizontal */
-justify-content: center; /* Alinha o conteúdo no centro vertical */
-height: 100vh; /* Ocupa a altura total da janela */">
+<body style="font-family: Arial, sans-serif; background-color: azure; margin: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh;">
 
-        <!-- Navbar -->
-        <div class="navbar navbar-default" role="navigation" style="background-color: grey">
-            <div class="container-fluid">
-                <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        <li>
-                            <!-- Link para a Tela Principal (Kanban) -->
-                            <a href="index.html">
-                                <i class="fas fa-columns" title="Kanban" id="kanban" onmouseenter="kanban(this)" onmouseleave="kanbanRemove(this)"></i>
-                            </a>
-                        </li>
-                        <li>
-                            <!-- Link para a Tela de Cadastro de Alunos -->
-                            <a href="cadastro-alunos.html">
-                                <i class="fas fa-user-graduate" title="Cadastro de Alunos" id="alunos" onmouseenter="alunos(this)" onmouseleave="alunosRemove(this)"></i>
-                            </a>
-                        </li>
-                        <li>
-                            <!-- Link para a Tela de Cadastro de Assuntos -->
-                            <a href="cadastro-assuntos.html">
-                                <i class="fas fa-book" title="Cadastro de Assuntos" id="estudos" onmouseenter="estudos(this)" onmouseleave="estudosRemove(this)"></i>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+    <!-- Navbar -->
+    <div class="navbar navbar-default" role="navigation" style="background-color: grey">
+        <div class="container-fluid">
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="index.html">
+                            <i class="fas fa-columns" title="Kanban" id="kanban" onmouseenter="kanban(this)" onmouseleave="kanbanRemove(this)"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="cadastro-alunos.html">
+                            <i class="fas fa-user-graduate" title="Cadastro de Alunos" id="alunos" onmouseenter="alunos(this)" onmouseleave="alunosRemove(this)"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="cadastro-assuntos.html">
+                            <i class="fas fa-book" title="Cadastro de Assuntos" id="estudos" onmouseenter="estudos(this)" onmouseleave="estudosRemove(this)"></i>
+                        </a>
+                    </li>
+                </ul>
             </div>
         </div>
-    
+    </div>
 
     <div class="form-container">
         <h2>Adicionar Tarefa</h2>
@@ -70,8 +60,10 @@ height: 100vh; /* Ocupa a altura total da janela */">
             <label for="description">Descrição:</label>
             <input type="text" name="description" id="description" placeholder="Digite o assunto a se estudar" required>
 
-            <label for="students">Alunos:</label>
-            <input type="text" name="students" id="students" placeholder="Digite o nome dos estudantes" required>
+            <label>Alunos:</label>
+            <div id="students-container">
+                <!-- Checkboxes serão gerados aqui -->
+            </div>
 
             <label>Prioridade:</label>
             <label class="priority-label">
@@ -83,8 +75,7 @@ height: 100vh; /* Ocupa a altura total da janela */">
             <label class="priority-label">
                 <input type="radio" name="priority" value="Alta" required> Alta
             </label>
-            <br>
-            <br>
+            <br><br>
             <label for="dueDate">Prazo:</label>
             <input type="text" name="dueDate" id="dueDate" placeholder="Digite o prazo de conclusão" required>
 
@@ -93,11 +84,71 @@ height: 100vh; /* Ocupa a altura total da janela */">
     </div>
 
     <script>
-        function addTask(event) {
-            event.preventDefault();
-            // Lógica para adicionar a tarefa
-            alert("Tarefa adicionada!");
+        const userId = Cookies.get('userId');
+        // Função para buscar os alunos do backend e gerar checkboxes
+        async function fetchStudents() {
+            try {
+                const response = await fetch(`http://135.181.89.240:8011/alunos?usuario=${userId}` );
+                const students = await response.json(); // Supondo que a resposta seja um array de alunos
+
+                const container = document.getElementById('students-container');
+                students.forEach(student => {
+                    const label = document.createElement('label');
+                    label.classList.add('checkbox-label');
+                    label.innerHTML = `
+                        <input type="checkbox" name="students" value="${student.nome}"> ${student.nome}
+                    `;
+                    container.appendChild(label);
+                });
+            } catch (error) {
+                console.error("Erro ao buscar alunos:", error);
+            }
         }
+
+        async function addTask(event) {
+            event.preventDefault();
+            const descricao = document.getElementById("description").value;
+            const prioridade = document.querySelector('input[name="priority"]:checked').value;
+            const prazo = document.getElementById("dueDate").value;
+
+            // Captura os alunos selecionados
+            const selectedStudents = Array.from(document.querySelectorAll('input[name="students"]:checked'))
+                .map(checkbox => checkbox.value)
+                .join(', '); // Junta os nomes com vírgula e espaço
+
+            // Monta o objeto com os dados a serem enviados
+            const data = {
+                descricao: descricao,
+                alunos: selectedStudents, // Alunos como uma string
+                prioridade: prioridade,
+                prazo: prazo,
+                usuario: userId
+            };
+
+            try {
+                const response = await fetch('http://135.181.89.240:8011/cadastrarAssunto', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    alert("Tarefa adicionada com sucesso!");
+                    document.querySelector("form").reset(); // Limpa o formulário
+                } else {
+                    alert("Erro ao adicionar a tarefa.");
+                }
+            } catch (error) {
+                console.error("Erro ao conectar com o servidor:", error);
+                alert("Erro ao conectar com o servidor.");
+            }
+        }
+
+        // Chama a função para buscar os alunos assim que a página carrega
+        window.onload = fetchStudents;
+
         function kanban(element) {
             element.classList.add('kanbanColor');
         }
@@ -116,8 +167,6 @@ height: 100vh; /* Ocupa a altura total da janela */">
         function estudosRemove(element) {
             element.classList.remove('estudosColor');
         }
-
     </script>
-    
 </body>
 </html>
