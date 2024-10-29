@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Studin Manager</title>
+    <link rel="stylesheet" href="./css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.1/js.cookie.min.js"></script>
+    <style>
+        .navbar {
+            position: fixed; /* Fixa a navbar no topo */
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000; /* Garante que a navbar fique acima de outros elementos */
+        }
+
+        .form-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            margin-top: 60px; /* Adiciona um espaço acima do formulário para não ficar atrás da navbar */
+        }
+    </style>
+</head>
+<body style="  font-family: Arial, sans-serif;
+background-color: azure;
+margin: 0;
+display: flex;
+flex-direction: column;
+align-items: center; /* Alinha o conteúdo no centro horizontal */
+justify-content: center; /* Alinha o conteúdo no centro vertical */
+height: 100vh; /* Ocupa a altura total da janela */">
+
+        <!-- Navbar -->
+        <div class="navbar navbar-default" role="navigation" style="background-color: grey">
+            <div class="container-fluid">
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li>
+                            <!-- Link para a Tela Principal (Kanban) -->
+                            <a href="index.html">
+                                <i class="fas fa-columns" title="Kanban" id="kanban" onmouseenter="kanban(this)" onmouseleave="kanbanRemove(this)"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <!-- Link para a Tela de Cadastro de Alunos -->
+                            <a href="cadastro-alunos.html">
+                                <i class="fas fa-user-graduate" title="Cadastro de Alunos" id="alunos" onmouseenter="alunos(this)" onmouseleave="alunosRemove(this)"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <!-- Link para a Tela de Cadastro de Assuntos -->
+                            <a href="cadastro-assuntos.html">
+                                <i class="fas fa-book" title="Cadastro de Assuntos" id="estudos" onmouseenter="estudos(this)" onmouseleave="estudosRemove(this)"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    
+
+    <div class="form-container">
+        <h2>Adicionar aluno</h2>
+        <form onsubmit="addStudent(event)">
+            <label for="description">Nome:</label>
+            <input type="text" name="nome" id="nome" placeholder="Digite o nome do aluno" required>
+            <input type="submit" class="btn" value="Adicionar aluno">
+        </form>
+    </div>
+    <!-- Adicione esta seção onde você deseja exibir os alunos com a opção de deletá-los -->
+    <h2>Lista de Alunos:</h2>
+    <div id="studentsList"></div>
+
+    <script>
+
+        const userId = Cookies.get('userId');
+        async function addStudent(event) {
+        event.preventDefault();
+          // Captura os valores dos inputs
+        const nome = document.getElementById("nome").value;
+        
+        // Monta o objeto com os dados a serem enviados
+        const data = {
+            nome: nome,
+            usuario: userId
+        };
+
+        try {
+            // Faz a requisição POST com o objeto JSON
+            const response = await fetch('http://135.181.89.240:8011/cadastrarAluno', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+
+            if (response.ok) {
+                alert("Aluno adicionado com sucesso!");
+                document.querySelector("form").reset(); // Limpa o formulário
+            } else {
+                alert("Erro ao adicionar aluno.");
+            }
+        } catch (error) {
+            console.error("Erro ao conectar com o servidor:", error);
+            alert("Erro ao conectar com o servidor.");
+        }
+    }
+        function kanban(element) {
+            element.classList.add('kanbanColor');
+        }
+        function kanbanRemove(element) {
+            element.classList.remove('kanbanColor');
+        }
+        function alunos(element) {
+            element.classList.add('alunosColor');
+        }
+        function alunosRemove(element) {
+            element.classList.remove('alunosColor');
+        }
+        function estudos(element) {
+            element.classList.add('estudosColor');
+        }
+        function estudosRemove(element) {
+            element.classList.remove('estudosColor');
+        }
+        document.addEventListener('DOMContentLoaded', (event) => {
+    fetchAndDisplayStudents();
+});
+
+async function fetchAndDisplayStudents() {
+    try {
+        const response = await fetch(`http://135.181.89.240:8011/alunos?usuario=${userId}`);
+        if (response.ok) {
+            const students = await response.json();
+            const studentsList = document.getElementById('studentsList');
+            studentsList.innerHTML = ''; // Limpa a lista anterior
+
+            students.forEach(student => {
+                const studentDiv = document.createElement('div');
+                studentDiv.innerHTML = `
+                    <span>${student.nome}</span>
+                    <button onclick="deleteStudent(${student.id}, '${student.nome}')">Deletar</button>
+                `;
+                studentsList.appendChild(studentDiv);
+            });
+        } else {
+            console.error("Erro ao buscar alunos.");
+        }
+    } catch (error) {
+        console.error("Erro ao conectar com o servidor:", error);
+    }
+}
+
+async function isStudentInTasks(studentName) {
+    try {
+        const response = await fetch(` http://135.181.89.240:8011/assuntos?usuario=${userId}`);
+        if (response.ok) {
+            const tasks = await response.json();
+            // Verifica se o aluno está na lista de alunos de alguma tarefa
+            return tasks.some(task => task.alunos.split(', ').includes(studentName));
+        } else {
+            console.error("Erro ao buscar tarefas.");
+            return false; // Se a requisição falhar, não bloqueia a exclusão
+        }
+    } catch (error) {
+        console.error("Erro ao conectar com o servidor:", error);
+        return false; // Se houver erro, não bloqueia a exclusão
+    }
+}
+
+async function deleteStudent(studentId, studentName) {
+    // Verifica se o aluno está associado a alguma tarefa
+    const isInTasks = await isStudentInTasks(studentName);
+
+    if (isInTasks) {
+        alert("Não é possível deletar este aluno porque ele está associado a uma tarefa.");
+        return; // Interrompe a execução se o aluno estiver associado a uma tarefa
+    }
+
+    if (confirm("Você tem certeza que deseja deletar este aluno?")) {
+        try {
+            const response = await fetch(`http://135.181.89.240:8011/alunos/${studentId}`, {
+                method: 'DELETE',
+            });
+
+            if (response.ok) {
+                alert("Aluno deletado com sucesso!");
+                fetchAndDisplayStudents(); // Atualiza a lista de alunos
+            } else {
+                alert("Erro ao deletar o aluno.");
+            }
+        } catch (error) {
+            console.error("Erro ao conectar com o servidor:", error);
+            alert("Erro ao conectar com o servidor.");
+        }
+    }
+}
+
+    </script>
+    
+</body>
+</html>
