@@ -73,6 +73,7 @@
 
             <label>Alunos:</label>
             <div id="students-container">
+                Cadastre ao menos um aluno para criar uma tarefa
                 <!-- Checkboxes serão gerados aqui -->
             </div>
 
@@ -88,7 +89,7 @@
             </label>
             <br><br>
             <label for="dueDate">Prazo:</label>
-            <input type="text" name="dueDate" id="dueDate" placeholder="Digite o prazo de conclusão" required>
+            <input type="date" name="dueDate" id="dueDate" placeholder="Digite o prazo de conclusão" required>
 
             <input type="submit" class="btn" value="Adicionar Tarefa">
         </form>
@@ -103,6 +104,10 @@
                 const students = await response.json(); // Supondo que a resposta seja um array de alunos
 
                 const container = document.getElementById('students-container');
+                if(students.length > 0){
+
+                    container.innerHTML = ''
+                }
                 students.forEach(student => {
                     const label = document.createElement('label');
                     label.classList.add('checkbox-label');
@@ -132,7 +137,7 @@
                 descricao: descricao,
                 alunos: selectedStudents, // Alunos como uma string
                 prioridade: prioridade,
-                prazo: prazo,
+                prazo: prazo.split('-').reverse().join('/'),
                 usuario: userId
             };
 
@@ -149,7 +154,7 @@
                     alert("Tarefa adicionada com sucesso!");
                     document.querySelector("form").reset(); // Limpa o formulário
                 } else {
-                    alert("Erro ao adicionar a tarefa.");
+                    alert("Erro ao adicionar a tarefa, certifique-se de que todos os campos foram preenchidos corretamente e que foi incluído ao menos um aluno.");
                 }
             } catch (error) {
                 console.error("Erro ao conectar com o servidor:", error);

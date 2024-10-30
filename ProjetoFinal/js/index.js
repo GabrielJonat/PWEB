@@ -328,7 +328,8 @@ editForm.addEventListener('submit', async function(event) {
     const registeredStudents = await fetchStudents(userId)
     console.log(registeredStudents)
     // Validação: verifica se todos os nomes na string `alunosInput` estão registrados
-    const alunos = alunosInput.split(', ').map(aluno => aluno.trim());
+    alunosInput.replace(', ',',')
+    const alunos = alunosInput.split(',').map(aluno => aluno.trim());
     const alunosNaoRegistrados = alunos.filter(aluno => !registeredStudents.includes(aluno));
 
     if (alunosNaoRegistrados.length > 0) {
@@ -339,7 +340,7 @@ editForm.addEventListener('submit', async function(event) {
     // Dados a serem enviados no PUT
     const data = {
         descricao: descricao,
-        alunos: alunos.join(','), // Converte para um array de alunos válidos
+        alunos: alunos.join(', '), // Converte para um array de alunos válidos
         prioridade: prioridade,
         prazo: prazo.split('-').reverse().join('/'), // Converte para DD/MM/YYYY
         usuario: userId
