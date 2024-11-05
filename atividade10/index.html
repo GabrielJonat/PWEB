@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calcula IMC</title>
+    <style>
+        body{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: blanchedalmond;
+            margin: 0;
+        }
+        .container{
+            padding: 2em;
+            margin: 2em;
+            border: #000 2px solid;
+            background-color: aliceblue;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+        label {
+            display: block;
+            margin: 1em 0 0.5em;
+            font-weight: bold;
+        }
+        
+        input[type="number"] {
+            width: 100%;
+            padding: 0.8em;
+            margin-bottom: 1em;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1em;
+        }
+        
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 0.8em;
+            width: 100%;
+            border: none;
+            border-radius: 4px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 1em;
+        }
+        
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form onsubmit="calcIMC(event)">
+            <label for="peso">Peso:</label>
+            <input type="decimal" id="peso" placeholder="Digite seu peso em KG">
+            <label for="altura">Altura:</label>
+            <input type="decimal" id="altura" placeholder="Digite sua altura em metros">
+            <input type="submit" value="Calcular IMC">
+        </form>
+    </div>
+    <script>
+        function calcIMC(event){
+            
+            event.preventDefault()
+            var altura = Number(document.getElementById('altura').value)
+            var peso = Number(document.getElementById('peso').value)
+            let IMC = peso / (altura * altura)
+            let veredito
+            if(IMC < 18.5){
+                veredito = 'magreza'
+            } else
+            if(IMC <= 24.9){
+                veredito = 'normal'
+            } else
+            if(IMC <= 29.9){
+                veredito = 'sobrepeso'
+            } else
+            if(IMC <= 39.9){
+                veredito = 'obesidade'
+            } else {
+                veredito = 'obesidade grave'
+            }
+            alert(`Seu IMC de ${IMC.toFixed(2)} indica que você está na classificação: ${veredito}`)
+        }
+    </script>
+</body>
+</html>

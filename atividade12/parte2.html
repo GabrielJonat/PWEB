@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atividade 12</title>
+</head>
+<body>
+    <script>
+        // Classe Conta
+class Conta {
+    constructor(nomeCorrentista, banco, numeroConta, saldo) {
+        this.nomeCorrentista = nomeCorrentista;
+        this.banco = banco;
+        this.numeroConta = numeroConta;
+        this.saldo = saldo;
+    }
+
+    // Métodos para get e set
+    getNomeCorrentista() {
+        return this.nomeCorrentista;
+    }
+
+    setNomeCorrentista(nome) {
+        this.nomeCorrentista = nome;
+    }
+
+    getSaldo() {
+        return this.saldo;
+    }
+
+    setSaldo(saldo) {
+        this.saldo = saldo;
+    }
+}
+
+// Classe Corrente que herda de Conta
+class Corrente extends Conta {
+    constructor(nomeCorrentista, banco, numeroConta, saldo, saldoEspecial) {
+        super(nomeCorrentista, banco, numeroConta, saldo);
+        this.saldoEspecial = saldoEspecial;
+    }
+}
+
+// Classe Poupanca que herda de Conta
+class Poupanca extends Conta {
+    constructor(nomeCorrentista, banco, numeroConta, saldo, juros, dataVencimento) {
+        super(nomeCorrentista, banco, numeroConta, saldo);
+        this.juros = juros;
+        this.dataVencimento = dataVencimento;
+    }
+}
+
+// Função para receber dados e criar contas
+function criarContas() {
+    // Criando Conta Corrente
+    const nomeCorrente = prompt("Nome do Correntista da Conta Corrente:");
+    const bancoCorrente = prompt("Banco da Conta Corrente:");
+    const numeroContaCorrente = prompt("Número da Conta Corrente:");
+    const saldoCorrente = parseFloat(prompt("Saldo da Conta Corrente:"));
+    const saldoEspecial = parseFloat(prompt("Saldo Especial da Conta Corrente:"));
+
+    const contaCorrente = new Corrente(nomeCorrente, bancoCorrente, numeroContaCorrente, saldoCorrente, saldoEspecial);
+    console.log(`Dados da Conta Corrente:`);
+    console.log(`Nome: ${contaCorrente.getNomeCorrentista()}, Banco: ${contaCorrente.banco}, Número: ${contaCorrente.numeroConta}, Saldo: ${contaCorrente.getSaldo()}, Saldo Especial: ${contaCorrente.saldoEspecial}`);
+
+    // Criando Conta Poupança
+    const nomePoupanca = prompt("Nome do Correntista da Conta Poupança:");
+    const bancoPoupanca = prompt("Banco da Conta Poupança:");
+    const numeroContaPoupanca = prompt("Número da Conta Poupança:");
+    const saldoPoupanca = parseFloat(prompt("Saldo da Conta Poupança:"));
+    const juros = parseFloat(prompt("Juros da Conta Poupança:"));
+    const dataVencimento = prompt("Data de Vencimento da Conta Poupança (DD/MM/AAAA):");
+
+    const contaPoupanca = new Poupanca(nomePoupanca, bancoPoupanca, numeroContaPoupanca, saldoPoupanca, juros, dataVencimento);
+    alert(`Dados da Conta Poupança:`);
+    alert(`Nome: ${contaPoupanca.getNomeCorrentista()}, Banco: ${contaPoupanca.banco}, Número: ${contaPoupanca.numeroConta}, Saldo: ${contaPoupanca.getSaldo()}, Juros: ${contaPoupanca.juros}, Data de Vencimento: ${contaPoupanca.dataVencimento}`);
+}
+
+// Chamada para criar contas
+criarContas();
+
+    </script>
+</body>
+</html>

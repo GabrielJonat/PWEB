@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transformar Texto</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+        }
+        input[type="text"] {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        input[type="radio"] {
+            margin: 0 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Transformar Texto</h1>
+        <input type="text" id="texto" placeholder="Digite seu texto aqui">
+        <br>
+        <label>
+            <input type="radio" name="transformacao" value="maiusculas" onclick="transformarTexto()"> Maiúsculas
+        </label>
+        <label>
+            <input type="radio" name="transformacao" value="minusculas" onclick="transformarTexto()"> Minúsculas
+        </label>
+        <br>
+        <h2 id="resultado"></h2>
+    </div>
+    
+    <script>
+        function transformarTexto() {
+            const texto = document.getElementById('texto').value;
+            const resultado = document.getElementById('resultado');
+            const maiusculas = document.querySelector('input[name="transformacao"][value="maiusculas"]');
+            const minusculas = document.querySelector('input[name="transformacao"][value="minusculas"]');
+
+            if (maiusculas.checked) {
+                resultado.textContent = texto.toUpperCase();
+            } else if (minusculas.checked) {
+                resultado.textContent = texto.toLowerCase();
+            } else {
+                resultado.textContent = '';
+            }
+        }
+    </script>
+</body>
+</html>

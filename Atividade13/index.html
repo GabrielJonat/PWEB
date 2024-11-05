@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .container {
+            text-align: center;
+            cursor: pointer;
+            border: 2px solid #000;
+            padding: 20px;
+            display: inline-block;
+            transition: background-color 0.3s;
+        }
+        img{
+
+            width: 300px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="janela" onmouseenter="openWindow()" onmouseleave="closeWindow()" onclick="breakIt()">
+        <h1>Janela Fechada</h1>
+        <img src="f.jpeg" alt="janela fechada">
+    </div>
+    <script>
+        function openWindow() {
+            let janela = document.getElementById('janela');
+            janela.innerHTML = `
+            <h1>Janela Aberta</h1>
+            <img src="a.jpeg" alt="janela aberta">`;
+        }
+
+        function closeWindow() {
+            let janela = document.getElementById('janela');
+            janela.innerHTML = `
+            <h1>Janela Fechada</h1>
+            <img src="f.jpeg" alt="janela fechada">`;
+        }
+
+        function breakIt() {
+            let janela = document.getElementById('janela');
+            janela.innerHTML = `
+            <h1>Janela Quebrada</h1>
+            <img src="q.jpeg" alt="janela quebrada">`;
+        }
+    </script>
+</body>
+</html>
